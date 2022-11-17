@@ -106,10 +106,11 @@ def download_button(object_to_download, download_filename, button_text, file_ext
 file_upload = st.file_uploader("Upload a csv file", type="csv")
 if file_upload is not None:
     data = pd.read_csv(file_upload)
-    column = data[["S11"]].values
+    column = data["S11"].values
     with open("automl.pkl", "rb") as f:
         model = pickle.load(f)
     predictions = model.predict(column)
+    predictions = pd.DataFrame(predictions.tolist(), columns = ["w1","w2","w3","s1","l1","l2","l3"])
     
     is_download = st.checkbox("Download predictions", value=False)
     if is_download:
