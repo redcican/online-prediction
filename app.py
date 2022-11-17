@@ -109,7 +109,7 @@ if file_upload is not None:
     column = data["S11"].values
     with open("automl.pkl", "rb") as f:
         model = pickle.load(f)
-    predictions = model.predict(column)
+    predictions = model.predict([column])
     predictions = pd.DataFrame(predictions.tolist(), columns = ["w1","w2","w3","s1","l1","l2","l3"])
     
     is_download = st.checkbox("Download predictions", value=False)
