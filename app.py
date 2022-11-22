@@ -107,7 +107,7 @@ def download_button(object_to_download, download_filename, button_text, file_ext
 file_upload = st.file_uploader("Upload a csv file", type="csv")
 if file_upload is not None:
     data = pd.read_csv(file_upload)
-    column = data["S11"].values
+    column = data["S11"].iloc[1:].values
     with open("automl.pkl", "rb") as f:
         model = pickle.load(f)
     pred_clip = model.predict([column])
