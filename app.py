@@ -7,6 +7,7 @@ import pickle
 import uuid
 import re
 from io import BytesIO
+import numpy as np
 
 def to_excel(df:pd.DataFrame):
     output = BytesIO()
@@ -109,8 +110,9 @@ if file_upload is not None:
     column = data["S11"].values
     with open("automl.pkl", "rb") as f:
         model = pickle.load(f)
-    predictions = model.predict([column])
-    predictions = pd.DataFrame(predictions.tolist(), columns = ["w1","w2","w3","s1","l1","l2","l3"])
+    pred_clip = model.predict([column])
+    pred_clip = np.clip(pred_clip, [0.2,0.4,3.9,0.2,13.9,13.8,13.2],[1.01,1.21,4.71,0.8,14.701,14.201,14.001])
+    predictions = pd.DataFrame(pred_clip.tolist(), columns = ["w1","w2","w3","s1","l1","l2","l3"])
     
     is_download = st.checkbox("Download predictions", value=False)
     if is_download:
